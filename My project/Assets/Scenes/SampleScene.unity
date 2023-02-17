@@ -155,6 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: BLACK
+  isCurrentPlayer: 0
 --- !u!114 &195873360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,6 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: WHITE
+  isCurrentPlayer: 0
 --- !u!114 &195873361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,7 +185,7 @@ MonoBehaviour:
   WHITE_PLAYER: {fileID: 195873360}
   BLACK_PLAYER: {fileID: 195873359}
   currentPlayer: {fileID: 195873360}
-  pieces: {fileID: 0}
+  pieces: {fileID: 748255897}
 --- !u!4 &195873362
 Transform:
   m_ObjectHideFlags: 0
