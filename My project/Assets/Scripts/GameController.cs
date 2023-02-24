@@ -6,6 +6,9 @@ using UnityEngine.Tilemaps;
 public class GameController : MonoBehaviour
 {
 
+
+    public const int PAWN = 1, TOWER = 2, BISHOP = 3, HORSE = 4, QUEEN = 5, KING = 6;
+
     public Player WHITE_PLAYER;
     public Player BLACK_PLAYER;
     
@@ -13,16 +16,32 @@ public class GameController : MonoBehaviour
 
     public Tilemap pieces;
 
-    void Start()
-    {
+    public int[][] gameState;
+
+
+    // Singleton
+    public static GameController Instance { get; private set; }
+    private void Awake() { 
+        if (Instance != null && Instance != this) Destroy(this); 
+        else Instance = this; 
+    }
+
+
+    void Start() {
+        SetupGameState();
         currentPlayer.isCurrentPlayer = true;
     }
 
-    void Update()
-    {
-        if (currentPlayer.hasMove()) {
-            object move = currentPlayer.getMove();
-            applyMove(move);
+
+    // negative if its black, positive if its white
+    private void SetupGameState() {
+        gameState = new int[8][8];
+    }
+
+    void Update() {
+        if (currentPlayer.HasMove()) {
+            object move = currentPlayer.GetMove();
+            ApplyMove(move);
 
             currentPlayer.isCurrentPlayer = false;
 
@@ -33,7 +52,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void applyMove(object move) {
+    private void ApplyMove(object move) {
         Debug.Log("Click!!!" + currentPlayer.color);
     }
 }

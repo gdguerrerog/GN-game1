@@ -6,14 +6,12 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
 
-    public const string QUEEN = "QUEEN", KING = "KING", BISHOP_W = "BISHOP_W", BISHOP_B = "BISHOP_B", TOWER_1 = "TOWER_1", TOWER_2 = "TOWER_2", PAWN = "PAWN";
-
     public string color;
     public bool isCurrentPlayer = false;
     private bool hasClicked = false;
 
     void Start() {
-        
+
     }
 
     void Update() {
@@ -27,7 +25,7 @@ public class Player : MonoBehaviour
         
    }
     
-    public bool hasMove() {
+    public bool HasMove() {
         if (hasClicked) {
             hasClicked = false;
             return true;
@@ -35,7 +33,7 @@ public class Player : MonoBehaviour
         return false;
     }
 
-    public object getMove() {
+    public object GetMove() {
         return null;
     }
 }
