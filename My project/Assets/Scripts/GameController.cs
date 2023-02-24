@@ -5,8 +5,6 @@ using UnityEngine.Tilemaps;
 
 public class GameController : MonoBehaviour
 {
-
-
     public const int PAWN = 1, TOWER = 2, BISHOP = 3, HORSE = 4, QUEEN = 5, KING = 6;
 
     public Player WHITE_PLAYER;
@@ -29,7 +27,6 @@ public class GameController : MonoBehaviour
 
     void Start() {
         SetupGameState();
-        currentPlayer.isCurrentPlayer = true;
     }
 
 
@@ -43,12 +40,8 @@ public class GameController : MonoBehaviour
             object move = currentPlayer.GetMove();
             ApplyMove(move);
 
-            currentPlayer.isCurrentPlayer = false;
-
             if (currentPlayer == WHITE_PLAYER) currentPlayer = BLACK_PLAYER;
             else currentPlayer = WHITE_PLAYER;
-            
-            currentPlayer.isCurrentPlayer = true;
         }
     }
 

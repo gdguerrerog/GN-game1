@@ -7,7 +7,6 @@ public class Player : MonoBehaviour
 {
 
     public string color;
-    public bool isCurrentPlayer = false;
     private bool hasClicked = false;
 
     void Start() {
@@ -15,7 +14,7 @@ public class Player : MonoBehaviour
     }
 
     void Update() {
-        if (isCurrentPlayer) {
+        if (GameController.Instance.currentPlayer == this) {
             Mouse mouse = Mouse.current;
             if (mouse.leftButton.wasPressedThisFrame) {
                 Vector3 mousePosition = mouse.position.ReadValue();
