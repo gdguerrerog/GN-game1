@@ -33,6 +33,40 @@ public class GameController : MonoBehaviour
     // negative if its black, positive if its white
     private void SetupGameState() {
         gameState = new int[8, 8];
+
+        // Pawns
+    for (int i = 0; i < 8; i++) {
+        gameState[1, i] = PAWN;
+        gameState[6, i] = -PAWN;
+    }
+
+    // Towers
+    gameState[0, 0] = TOWER;
+    gameState[0, 7] = TOWER;
+    gameState[7, 0] = -TOWER;
+    gameState[7, 7] = -TOWER;
+
+    // Horses
+    gameState[0, 1] = HORSE;
+    gameState[0, 6] = HORSE;
+    gameState[7, 1] = -HORSE;
+    gameState[7, 6] = -HORSE;
+
+    // Bishops
+    gameState[0, 2] = BISHOP;
+    gameState[0, 5] = BISHOP;
+    gameState[7, 2] = -BISHOP;
+    gameState[7, 5] = -BISHOP;
+
+    // Queens
+    gameState[0, 3] = QUEEN;
+    gameState[7, 3] = -QUEEN;
+
+    // Kings
+    gameState[0, 4] = KING;
+    gameState[7, 4] = -KING;
+
+
     }
 
     void Update() {
