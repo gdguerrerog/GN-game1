@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour
 
     public Tilemap pieces;
 
-    public int[][] gameState;
+    public int[,] gameState;
 
 
     // Singleton
@@ -35,7 +35,7 @@ public class GameController : MonoBehaviour
 
     // negative if its black, positive if its white
     private void SetupGameState() {
-        gameState = new int[8][8];
+        gameState = new int[8, 8];
     }
 
     void Update() {
