@@ -6,6 +6,11 @@ public class Utils : MonoBehaviour
 {
 
     public static List<(int, int)> GetMovementsPawn((int, int) location, int[,] gameState, string player) {
+        int x = location.Item1;
+        int y = location.Item2;
+        List<(int, int)> movements = new List<(int, int)>();
+
+        
         return null;
     }
 
