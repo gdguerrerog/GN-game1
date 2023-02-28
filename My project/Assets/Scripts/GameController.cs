@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.InputSystem;
 
 public class GameController : MonoBehaviour
 {
     public const int PAWN = 1, TOWER = 2, BISHOP = 3, HORSE = 4, QUEEN = 5, KING = 6;
     public const string WHITE = "WHITE", BLACK = "BLACK";
 
+    private Camera cam;
     public Player WHITE_PLAYER;
     public Player BLACK_PLAYER;
     
@@ -27,13 +29,15 @@ public class GameController : MonoBehaviour
 
 
     void Start() {
-        SetupGameState();
+        cam = Camera.main;
+        ReadGameState();
+        // SetupGameState();
     }
 
 
     // negative if its black, positive if its white
-    private void SetupGameState() {
-        gameState = new int[8, 8];
+    private int[,] SetupGameState() {
+        int[,] gameState = new int[8, 8];
 
         // Pawns
         for (int i = 0; i < 8; i++) {
@@ -66,6 +70,23 @@ public class GameController : MonoBehaviour
         // Kings
         gameState[0, 4] = KING;
         gameState[7, 4] = -KING;
+
+        return gameState;
+    }
+
+
+    private int[,] ReadGameState() {
+        Vector3Int corner = new Vector3Int(-4, -4, 0);
+
+        int[,] gameState = new int[8, 8];
+
+
+        for (int i = 0; i < 8; i++) for (int j = 0; j < 8; j++) {
+            Debug.Log(pieces.GetTile(corner + new Vector3Int(i, j, 0))?.name);
+        }
+
+
+        return gameState;
     }
 
     void Update() {
@@ -76,6 +97,7 @@ public class GameController : MonoBehaviour
             if (currentPlayer == WHITE_PLAYER) currentPlayer = BLACK_PLAYER;
             else currentPlayer = WHITE_PLAYER;
         }
+
     }
 
     private void ApplyMove(object move) {

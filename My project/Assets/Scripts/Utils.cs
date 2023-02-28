@@ -2,9 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Utils : MonoBehaviour
+public class Utils
 {
 
+
+    public static readonly (int, int)[] ROUND_4 = {(1, 0), (-1, 0), (0, 1), (0, -1)};
+    public static readonly (int, int)[] ROUND_8 = {
+        ( 1, 1), ( 1, 0), ( 1, -1),
+        ( 0, 1),          ( 0, -1),
+        (-1, 1), (-1, 0), (-1, -1)
+    };
 
     // Cheks if a piece is ally of a player or not
     public static bool isAlly(int piece, string player) {
@@ -41,48 +48,12 @@ public class Utils : MonoBehaviour
 
 
     public static List<(int, int)> GetMovementsKing((int, int) location, int[,] gameState, string player) {
-    int x = location.Item1;
-    int y = location.Item2;
-    List<(int, int)> movements = new List<(int, int)>();
-
-    // List of possible movements for the king
-    (int, int)[] directions = 
-    {
-        (1, 1),  (1, 0),  (1, -1),
-        (0, 1),           (0, -1),
-        (-1, 1), (-1, 0), (-1, -1)
-    };
-
-    // Check each direction to add the possible movement to the list
-    foreach ((int dx, int dy) in directions) {
-        int newX = x + dx;
-        int newY = y + dy;
-
-        // Check if new position is inside the board
-        if (newX < 0 || newX >= 8 || newY < 0 || newY >= 8) continue;
-
-        int targetPiece = gameState[newX, newY];
-
-        // Check if new position is empty or contains an enemy piece
-        if (targetPiece == 0 || !isAlly(targetPiece, player)) {
-            movements.Add((newX, newY));
-        }
-    }
-
-    return movements;
-    }
-
-    public List<(int, int)> GetMovementsTower((int, int) location, int[,] gameState, string player) {
-        return null;
+        return GetFixedMovements(location, gameState, player, ROUND_8);
     }
 
 
-
-    public List<(int, int)> GetMovementsBishop((int, int) location, int[,] gameState, string player) {
+    public static List<(int, int)> GetInfiniteMovements((int, int) location, int[,] gameState, string player, (int, int)[] directions) {
         List<(int, int)> exit = new List<(int, int)>();
-
-        (int, int)[] directions = {(1, 0), (-1, 0), (0, 1), (0, -1)};
-
         // For each direction
         foreach ((int, int) dir in directions) {
             // For each possible distance
@@ -101,17 +72,47 @@ public class Utils : MonoBehaviour
                 }
             }    
         }
-        
 
         return exit;
     }
 
-     public List<(int, int)> GetMovementsQueen((int, int) location, int[,] gameState, string player) {
-        return null;
+
+    public static List<(int, int)> GetFixedMovements((int, int) location, int[,] gameState, string player, (int, int)[] directions) {
+        List<(int, int)> exit = new List<(int, int)>();
+        
+        foreach ((int dx, int dy) dir in directions) {
+            (int, int) newLocation = (location.Item1 + dir.Item1, location.Item2 + dir.Item2);
+
+            // Check if new position is inside the board
+            if (newLocation.Item1 < 0 || newLocation.Item1 >= 8 || newLocation.Item2 < 0 || newLocation.Item2 >= 8) continue;
+
+            int targetPiece = gameState[newLocation.Item1, newLocation.Item2];
+
+            // Check if new position is empty or contains an enemy piece
+            if (targetPiece == 0 || !isAlly(targetPiece, player)) exit.Add(newLocation);
+        }
+
+        return exit;
     }
 
-     public List<(int, int)> GetMovementsHorse((int, int) location, int[,] gameState, string player) {
-        return null;
+    public static List<(int, int)> GetMovementsTower((int, int) location, int[,] gameState, string player) {
+        return GetInfiniteMovements(location, gameState, player, ROUND_4);
+    }
+
+
+
+    public static List<(int, int)> GetMovementsBishop((int, int) location, int[,] gameState, string player) {
+        (int, int)[] directions = {(1, 1), (-1, -1), (-1, 1), (1, -1)};
+        return GetInfiniteMovements(location, gameState, player, directions);
+    }
+
+     public static List<(int, int)> GetMovementsQueen((int, int) location, int[,] gameState, string player) {
+        return GetInfiniteMovements(location, gameState, player, ROUND_8);
+    }
+
+     public static List<(int, int)> GetMovementsHorse((int, int) location, int[,] gameState, string player) {
+        (int, int)[] directions = {(2, 1), (2, -1), (-2, 1), (-2, -1), (1, -2), (-1, -2), (1, 2), (-1, 2)};
+        return GetFixedMovements(location, gameState, player, directions);
     }
 
 
