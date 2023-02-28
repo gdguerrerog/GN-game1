@@ -13,16 +13,63 @@ public class Utils : MonoBehaviour
     }
 
     public static List<(int, int)> GetMovementsPawn((int, int) location, int[,] gameState, string player) {
-        int x = location.Item1;
-        int y = location.Item2;
-        List<(int, int)> movements = new List<(int, int)>();
+    int x = location.Item1;
+    int y = location.Item2;
+    List<(int, int)> movements = new List<(int, int)>();
 
+    int direction = (player == GameController.WHITE) ? 1 : -1;
+    
+    (int, int)[] directions = 
+    {
+        (1, direction), (0,direction), (-1, direction) 
+    };
+
+    // For each direction
+    foreach ((int, int) dir in directions) {
+        (int, int) newLocation = (x + dir.Item1, y + dir.Item2);
+        // Check if locations is inside the bounds of the board
+        if (newLocation.Item1 < 0 || newLocation.Item1 >= 8 || newLocation.Item2 < 0 || newLocation.Item2 >= 8) continue;
         
-        return null;
+        int targetPiece = gameState[newLocation.Item1, newLocation.Item2];
+
+        if(targetPiece == 0 && dir.Item1==0) movements.Add(newLocation);
+        else if (targetPiece != 0 && !isAlly(targetPiece, player)) movements.Add(newLocation); // Can eat a enemy piece
     }
 
-    public List<(int, int)> GetMovementsKing((int, int) location, int[,] gameState, string player) {
-        return null;
+    return movements;
+    }
+
+
+    public static List<(int, int)> GetMovementsKing((int, int) location, int[,] gameState, string player) {
+    int x = location.Item1;
+    int y = location.Item2;
+    List<(int, int)> movements = new List<(int, int)>();
+
+    // List of possible movements for the king
+    (int, int)[] directions = 
+    {
+        (1, 1),  (1, 0),  (1, -1),
+        (0, 1),           (0, -1),
+        (-1, 1), (-1, 0), (-1, -1)
+    };
+
+    // Check each direction to add the possible movement to the list
+    foreach ((int dx, int dy) in directions) {
+        int newX = x + dx;
+        int newY = y + dy;
+
+        // Check if new position is inside the board
+        if (newX < 0 || newX >= 8 || newY < 0 || newY >= 8) continue;
+
+        int targetPiece = gameState[newX, newY];
+
+        // Check if new position is empty or contains an enemy piece
+        if (targetPiece == 0 || !isAlly(targetPiece, player)) {
+            movements.Add((newX, newY));
+        }
+    }
+
+    return movements;
     }
 
     public List<(int, int)> GetMovementsTower((int, int) location, int[,] gameState, string player) {
